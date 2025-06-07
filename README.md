@@ -45,9 +45,10 @@ El flujo de trabajo incluye:
 +-- requirements.txt
 +-- DDBB/                                (Archivos CSV con datos TLE etiquetados)
 | +-- 001_TLE_22ABR_J111_labelled.csv
-| +-- ...                                (y otros archivos de datos)
-+-- images/                              (Capturas de resultados para este README)
-| +-- Evaluation of Individual models/
+| +-- ...                                
++-- images/                              
+| +--DistribucionSatPorGrupo.png         (La imagen de distribución de grupos)
+| +-- Evaluation of Individual models/   (Archivos de matrices y ROC de los modelos individuales)
     +-- ConfMat_RF.png
     +-- ConfMat_SVM.png
     +-- ConfMat_XGBoost.png
@@ -55,14 +56,14 @@ El flujo de trabajo incluye:
     +-- ROC_SVM.png
     +-- ROC_XGBoost.png
 | +-- Evaluation of Model Combinations/
-    +-- ...                              (archivos de matrices y ROC de combinaciones)
+    +-- ...                              (Archivos de matrices y ROC de combinaciones)
 | +-- Importance of features/
-    +-- ...                              (archivos de importancia de características)
+    +-- ...                              (Archivos de importancia de características)
 +-- src/
-|   +-- TLEClasificacionSatelites.ipynb  (Notebook principal con todo el código)
-|   +-- SVM_model.joblib                 (Modelo SVM pre-entrenado)
-|   +-- Random_Forest_model.joblib       (Modelo Random Forest pre-entrenado)
-|   +-- XGBoost_model.joblib             (Modelo XGBoost pre-entrenado)
+|   +-- TLETLEClasificacionSatelites.ipynb  (Notebook principal con todo el código)
+|   +-- SVM_model.joblib                    (Modelo SVM pre-entrenado)
+|   +-- Random_Forest_model.joblib          (Modelo Random Forest pre-entrenado)
+|   +-- XGBoost_model.joblib                (Modelo XGBoost pre-entrenado)
 +-- ...
 ```
 
@@ -84,8 +85,8 @@ Este proyecto utiliza **Git LFS (Large File Storage)** para gestionar archivos g
 1.  **Clonar el repositorio:**
     Al clonar, Git LFS debería descargar automáticamente los archivos grandes.
     ```bash
-    git clone https://github.com/[TU_USUARIO_GITHUB]/[NOMBRE_DEL_REPOSITORIO].git
-    cd [NOMBRE_DEL_REPOSITORIO]
+    git clone https://github.com/MiguelCarra/tle-satellite-classifier-python.git
+    cd tle-satellite-classifier-python
     ```
     Si por alguna razón los archivos LFS no se descargan (verás archivos pequeños de texto en lugar de los datos/modelos), puedes intentar:
     ```bash
@@ -130,7 +131,7 @@ Una vez completados estos pasos (ya sea el Método 1 o el Método 2, **asegurand
     # o
     jupyter lab
     ```
-2.  Navega hasta la carpeta `src/` y abre el archivo `ClasificacionSatelites.ipynb`.
+2.  Navega hasta la carpeta `src/` y abre el archivo `TLEClasificacionSatelites.ipynb`.
 3.  Ejecuta las celdas del notebook en orden. El notebook:
     *   Cargará y preprocesará los datos de los archivos CSV en `DDBB/`.
     *   Realizará un análisis exploratorio básico.
@@ -142,11 +143,17 @@ Una vez completados estos pasos (ya sea el Método 1 o el Método 2, **asegurand
 
 ## Resultados y Demostración
 
-Dado que este proyecto no cuenta con un informe formal separado, los resultados clave se visualizan directamente en el notebook y se resumen a continuación. Las imágenes detalladas de las evaluaciones se encuentran en las subcarpetas dentro de `images/`.
+Este proyecto se desarrolla íntegramente en un Jupyter Notebook, donde se pueden encontrar todos los análisis detallados, visualizaciones y la ejecución paso a paso del código. A continuación, se presenta un resumen de los resultados más destacados. Para una exploración completa, se recomienda ejecutar el notebook `src/TLEClasificacionSatelites.ipynb`.
 
-**Distribución de Grupos de Satélites (Después del preprocesamiento y submuestreo):**
-![Distribución de grupos de satélites](images/Evaluation%20of%20Individual%20models/DistribucionSatPorGrupo.png)
-*(Generada en la sección 3 del notebook)*
+**1. Análisis Exploratorio Inicial:**
+
+*   **Distribución de Grupos de Satélites (Tras preprocesamiento):**
+    ![Distribución de grupos de satélites](images/DistribucionSatPorGrupo.png)
+    *(Esta visualización, generada en la sección 3 del notebook, muestra la composición de los datos tras la limpieza inicial y el submuestreo de la clase 'starlink').*
+
+**2. Rendimiento de los Modelos de Clasificación:**
+
+Se entrenaron y evaluaron tres modelos individuales y cinco estrategias de combinación. Las tablas resumen las precisiones (accuracy) obtenidas en el conjunto de validación:
 
 **Rendimiento de Modelos Individuales (Accuracy):**
 ```
@@ -170,25 +177,25 @@ Tabla-resumen de Acc. - Combinación de modelos:
 4 Combinación por votación mayoritaria    0.9774
 ```
 
-**Ejemplo de Matriz de Confusión (para XGBoost - Mejor Modelo Individual):**
-![Matriz de Confusión XGBoost](images/Evaluation%20of%20Individual%20models/ConfMat_XGBoost.png)
-*(Generada en la sección 6 del notebook para el modelo XGBoost)*
+**3. Evaluación Detallada de los Modelos con Mejor Rendimiento:**
 
-**Ejemplo de Curva ROC Multiclase (para XGBoost - Mejor Modelo Individual):**
-![Curva ROC XGBoost](images/Evaluation%20of%20Individual%20models/ROC_XGBoost.png)
-*(Generada en la sección 6 del notebook para el modelo XGBoost)*
+*   **Mejor Modelo Individual: XGBoost (Accuracy: 0.9935)**
+    *   Matriz de Confusión:
+        ![Matriz de Confusión XGBoost](images/Evaluation%20of%20Individual%20models/ConfMat_XGBoost.png)
+    *   Curva ROC Multiclase:
+        ![Curva ROC XGBoost](images/Evaluation%20of%20Individual%20models/ROC_XGBoost.png)
+    *   Importancia de Características:
+        ![Importancia de Características XGBoost](images/Importance%20of%20features/XGBoost.png)
+        *(Visualizaciones generadas en las secciones 6 y 8 del notebook).*
 
-**Ejemplo de Importancia de Características (para XGBoost - Mejor Modelo Individual):**
-![Importancia de Características XGBoost](images/Importance%20of%20features/XGBoost.png)
-*(Generada en la sección 8 del notebook para el modelo XGBoost)*
+*   **Mejor Combinación de Modelos: Promedio Ponderado de Probabilidades (Accuracy: 0.9925)**
+    *   Matriz de Confusión:
+        ![Matriz de Confusión Combinación Promedio Ponderado](images/Evaluation%20of%20Model%20Combinations/ConfMat_PromPond.png)
+    *   Curva ROC Multiclase:
+        ![Curva ROC Combinación Promedio Ponderado](images/Evaluation%20of%20Model%20Combinations/ROC_PromPond.png)
+        *(Visualizaciones generadas en la sección 7 del notebook).*
 
-**Ejemplo de Matriz de Confusión (para Combinación por Promedio Ponderado - Mejor Combinación):**
-![Matriz de Confusión Combinación Promedio Ponderado](images/Evaluation%20of%20Model%20Combinations/ConfMat_PromPond.png)
-*(Generada en la sección 7 del notebook para la combinación por promedio ponderado)*
-
-**Ejemplo de Curva ROC Multiclase (para Combinación por Promedio Ponderado - Mejor Combinación):**
-![Curva ROC Combinación Promedio Ponderado](images/Evaluation%20of%20Model%20Combinations/ROC_PromPond.png)
-*(Generada en la sección 7 del notebook para la combinación por promedio ponderado)*
+Para un análisis más profundo, incluyendo reportes de clasificación completos, métricas FAR/FRR por clase para todos los modelos y combinaciones, así como la predicción de un ejemplo aleatorio, por favor consulte la ejecución completa del Jupyter Notebook.
 
 ## Conclusiones y Líneas Futuras (Resumen)
 
